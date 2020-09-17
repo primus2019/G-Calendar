@@ -1,12 +1,12 @@
 <template>
-  <b-table responsive borderless selectable select-mode="single" :fields="tableFields" :items="tableItems">
+  <b-table responsive small selectable select-mode="single" :fields="tableFields" :items="tableItems" primary-key="hour">
     <template v-slot:cell(hour)="data">
       {{ data.value }}
     </template>
     <template v-slot:cell(day0)="data" v-if="['W', 'X', 'D'].includes(timeUnit)">
       <b-button
         block
-        id="taskButton"
+        class="task-button"
         v-if="data.value.title"
         :variant="importanceMap[data.value.importance]"
       >
@@ -14,22 +14,64 @@
       </b-button>
     </template>
     <template v-slot:cell(day1)="data" v-if="['W', 'X'].includes(timeUnit)">
-      {{ data.value.title }}
+      <b-button
+        block
+        class="task-button"
+        v-if="data.value.title"
+        :variant="importanceMap[data.value.importance]"
+      >
+        {{ data.value.title }}
+      </b-button>
     </template>
     <template v-slot:cell(day2)="data" v-if="['W', 'X'].includes(timeUnit)">
-      {{ data.value.title }}
+      <b-button
+        block
+        class="task-button"
+        v-if="data.value.title"
+        :variant="importanceMap[data.value.importance]"
+      >
+        {{ data.value.title }}
+      </b-button>
     </template>
     <template v-slot:cell(day3)="data" v-if="['W', 'X'].includes(timeUnit)">
-      {{ data.value.title }}
+      <b-button
+        block
+        class="task-button"
+        v-if="data.value.title"
+        :variant="importanceMap[data.value.importance]"
+      >
+        {{ data.value.title }}
+      </b-button>
     </template>
     <template v-slot:cell(day4)="data" v-if="['W'].includes(timeUnit)">
-      {{ data.value.title }}
+      <b-button
+        block
+        class="task-button"
+        v-if="data.value.title"
+        :variant="importanceMap[data.value.importance]"
+      >
+        {{ data.value.title }}
+      </b-button>
     </template>
     <template v-slot:cell(day5)="data" v-if="['W'].includes(timeUnit)">
-      {{ data.value.title }}
+      <b-button
+        block
+        class="task-button"
+        v-if="data.value.title"
+        :variant="importanceMap[data.value.importance]"
+      >
+        {{ data.value.title }}
+      </b-button>
     </template>
     <template v-slot:cell(day6)="data" v-if="['W'].includes(timeUnit)">
-      {{ data.value.title }}
+      <b-button
+        block
+        class="task-button"
+        v-if="data.value.title"
+        :variant="importanceMap[data.value.importance]"
+      >
+        {{ data.value.title }}
+      </b-button>
     </template>
   </b-table>
 </template>
@@ -61,3 +103,13 @@ export default Vue.extend({
   }
 })
 </script>
+
+<style scoped>
+.task-button {
+  height: 1000px;
+}
+b-table {
+  table-layout: fixed;
+  word-break: break-all;
+}
+</style>

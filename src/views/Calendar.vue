@@ -14,6 +14,11 @@
         :tableItems="tableItems"
       ></HourTable>
     </b-row>
+    <HourList
+      :timeUnit="timeUnit"
+      :tableFields="tableFields"
+      :listItems="listItems"
+    ></HourList>
   </b-container>
 </template>
 
@@ -21,24 +26,31 @@
 import Vue from 'vue'
 import Navbar from '../components/Navbar.vue'
 import HourTable from '../components/HourTable.vue'
+import HourList from '../components/HourList.vue'
 
 export default Vue.extend({
   name: 'Calendar',
   components: {
     Navbar,
-    HourTable
+    HourTable,
+    HourList
   },
   data () {
     return {
-      timeUnit: 'D',
+      timeUnit: 'W',
       tableFields: [
         'hour',
         { key: 'day0', label: '2020年9月15日' },
-        { key: 'day1', label: '2020年9月16日' }
+        { key: 'day1', label: '2020年9月16日' },
+        { key: 'day2', label: '2020年9月17日' },
+        { key: 'day3', label: '2020年9月18日' },
+        { key: 'day4', label: '2020年9月19日' },
+        { key: 'day5', label: '2020年9月20日' },
+        { key: 'day6', label: '2020年9月21日' }
       ],
       tableItems: [
-        { hour: 0, day0: { start: 20, end: 30, title: 'aaa', description: 'bbb', importance: 0 }, day1: {} },
-        { hour: 1, day0: { start: 20, end: 30, title: 'aaa', description: 'bbb', importance: 0 }, day1: {} },
+        { hour: 0, day0: { start: 20, end: 30, title: 'aaa', description: 'bbb', importance: 0 }, day1: {}, day2: {}, day3: {}, day4: {}, day5: {}, day6: { title: 'aaa', importance: 3 } },
+        { hour: 1, day0: { start: 20, end: 30, title: 'aaa', description: 'bbb', importance: 0 }, day1: { start: 20, end: 30, title: 'aaa', description: 'bbb', importance: 0 } },
         { hour: 2, day0: {}, day1: {} },
         { hour: 3, day0: {}, day1: {} },
         { hour: 4, day0: {}, day1: {} },
@@ -61,6 +73,20 @@ export default Vue.extend({
         { hour: 21, day0: {}, day1: {} },
         { hour: 22, day0: {}, day1: {} },
         { hour: 23, day0: {}, day1: {} }
+      ],
+      listItems: [
+        [
+          { start: '0620', end: '0820', title: 'aaa', description: 'bbb', importance: 0 },
+          { start: '0620', end: '0820', title: 'aaa', description: 'bbb', importance: 0 },
+          { start: '0620', end: '0820', title: 'aaa', description: 'bbb', importance: 0 },
+          { start: '0620', end: '0820', title: 'aaa', description: 'bbb', importance: 0 }
+        ],
+        [
+          { start: '0620', end: '0820', title: 'aaa', description: 'bbb', importance: 0 },
+          { start: '0620', end: '0820', title: 'aaa', description: 'bbb', importance: 0 },
+          { start: '0620', end: '0820', title: 'aaa', description: 'bbb', importance: 0 },
+          { start: '0620', end: '0820', title: 'aaa', description: 'bbb', importance: 0 }
+        ]
       ]
     }
   },
