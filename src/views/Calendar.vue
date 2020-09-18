@@ -14,11 +14,14 @@
         :tableItems="tableItems"
       ></HourTable>
     </b-row>
-    <HourList
-      :timeUnit="timeUnit"
-      :tableFields="tableFields"
-      :listItems="listItems"
-    ></HourList>
+    <b-row>
+      <HourList
+        :timeUnit="timeUnit"
+        :tableFields="tableFields"
+        :listItems="listItems"
+        @add-task="handleAddTask"
+      ></HourList>
+    </b-row>
   </b-container>
 </template>
 
@@ -97,6 +100,9 @@ export default Vue.extend({
     },
     handleFocusToday (): void {
       console.log('handleFocusToday')
+    },
+    handleAddTask () {
+      console.log('handleAddTask')
     }
   }
 })
