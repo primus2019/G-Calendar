@@ -8,39 +8,39 @@
       ></Navbar>
     </b-row>
     <b-row>
-      <HourTable
-        :timeUnit="timeUnit"
-        :tableFields="tableFields"
-        :tableItems="tableItems"
-      ></HourTable>
-    </b-row>
-    <b-row>
       <HourList
         :timeUnit="timeUnit"
         :tableFields="tableFields"
         :listItems="listItems"
         @add-task="handleAddTask"
+        @show-task="handleShowTask"
       ></HourList>
     </b-row>
+    <TaskDetail
+      id="task-detail"
+      :task="taskOnShow"
+      @alter-task="handleAlterTask"
+      @delete-task="handleDeleteTask"
+    ></TaskDetail>
   </b-container>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import Navbar from '../components/Navbar.vue'
-import HourTable from '../components/HourTable.vue'
 import HourList from '../components/HourList.vue'
+import TaskDetail from '../components/TaskDetail.vue'
 
 export default Vue.extend({
   name: 'Calendar',
   components: {
     Navbar,
-    HourTable,
-    HourList
+    HourList,
+    TaskDetail
   },
   data () {
     return {
-      timeUnit: 'W',
+      timeUnit: 'X',
       tableFields: [
         'hour',
         { key: 'day0', label: '2020年9月15日' },
@@ -77,20 +77,97 @@ export default Vue.extend({
         { hour: 22, day0: {}, day1: {} },
         { hour: 23, day0: {}, day1: {} }
       ],
-      listItems: [
-        [
-          { start: '0620', end: '0820', title: 'aaa', description: 'bbb', importance: 0 },
-          { start: '0620', end: '0820', title: 'aaa', description: 'bbb', importance: 0 },
-          { start: '0620', end: '0820', title: 'aaa', description: 'bbb', importance: 0 },
-          { start: '0620', end: '0820', title: 'aaa', description: 'bbb', importance: 0 }
-        ],
-        [
-          { start: '0620', end: '0820', title: 'aaa', description: 'bbb', importance: 0 },
-          { start: '0620', end: '0820', title: 'aaa', description: 'bbb', importance: 0 },
-          { start: '0620', end: '0820', title: 'aaa', description: 'bbb', importance: 0 },
-          { start: '0620', end: '0820', title: 'aaa', description: 'bbb', importance: 0 }
-        ]
-      ]
+      listItems: {
+        0: {
+          date: '2020年9月18日',
+          8: {
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            task_id: 0,
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            start_hour: 8,
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            start_minute: 10,
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            end_hour: 10,
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            end_minute: 10,
+            length: 1,
+            offset: 1.5,
+            title: 'some title',
+            description: 'some description',
+            location: 'some location',
+            importance: 0,
+            daily: false
+          }
+        },
+        1: {
+          date: '2020年9月19日',
+          8: {
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            task_id: 0,
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            start_hour: 8,
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            start_minute: 10,
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            end_hour: 10,
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            end_minute: 10,
+            length: 1.5,
+            offset: 0.5,
+            title: 'some title',
+            description: 'some description',
+            location: 'some location',
+            importance: 1,
+            daily: false
+          }
+        },
+        2: {
+          date: '2020年9月20日',
+          8: {
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            task_id: 0,
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            start_hour: 8,
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            start_minute: 10,
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            end_hour: 10,
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            end_minute: 10,
+            length: 3,
+            offset: 0.5,
+            title: 'some title',
+            description: 'some description',
+            location: 'some location',
+            importance: 2,
+            daily: false
+          }
+        },
+        3: {
+          date: '2020年9月21日',
+          8: {
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            task_id: 0,
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            start_hour: 8,
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            start_minute: 10,
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            end_hour: 10,
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            end_minute: 10,
+            length: 4.5,
+            offset: 0.5,
+            title: 'some title',
+            description: 'some description',
+            location: 'some location',
+            importance: 3,
+            daily: false
+          }
+        }
+      },
+      taskOnShow: {}
     }
   },
   methods: {
@@ -101,8 +178,20 @@ export default Vue.extend({
     handleFocusToday (): void {
       console.log('handleFocusToday')
     },
-    handleAddTask () {
-      console.log('handleAddTask')
+    async handleAddTask (): Promise<void> {
+      await console.log('handleAddTask')
+    },
+    async handleShowTask (day: number, hour: number): Promise<void> {
+      console.log('handleShowTask')
+      this.taskOnShow = (this.listItems as Record<string, any>)[day][hour]
+      await this.$bvModal.show('task-detail')
+    },
+    async handleAlterTask (newTask: Record<string, any>): Promise<void> {
+      await console.log('handleAlterTask')
+    },
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    async handleDeleteTask (task_id: number): Promise<void> {
+      await console.log('handleDeleteTask', task_id)
     }
   }
 })
