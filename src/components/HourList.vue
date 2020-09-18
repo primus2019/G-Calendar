@@ -20,15 +20,15 @@
       :md="Math.floor((totalCols['md'] - hourIndexCols['md']) / timeUnitNum[timeUnit])"
       :sm="Math.floor((totalCols['sm'] - hourIndexCols['sm']) / timeUnitNum[timeUnit])"
       :cols="Math.floor((totalCols['cols'] - hourIndexCols['cols']) / timeUnitNum[timeUnit])"
-      v-for="(singleList, listIndex) in listItems"
-      :key="listIndex"
+      v-for="day in timeUnitNum[timeUnit]"
+      :key="day"
       style="margin: 0px; padding: 0px;"
     >
       <b-list-group flush>
         <b-list-group-item class="list-group-item">
-          {{ (totalCols['xl'] - hourIndexCols['xl']) / timeUnitNum[timeUnit] }}
+          {{ listItems[day - 1].date }}
         </b-list-group-item>
-        <div v-for="(item, itemIndex) in singleList" :key="itemIndex">
+        <div v-for="hour in 24" :key="hour">
           <b-list-group-item
             button
             class="list-group-item"
@@ -37,10 +37,12 @@
             <b-button
               block
               class="task-button"
-              v-if="itemIndex === 0"
-              :style="taskButtonStyle"
+              v-if="listItems[day - 1][hour - 1]"
+              :style="taskButtonStyle(day - 1, hour - 1)"
+              :variant="importanceVariantMap[listItems[day - 1][hour - 1].importance]"
+              @click.stop="$emit('show-task', day - 1, hour - 1)"
             >
-              {{ item.title }}
+              {{ listItems[day - 1][hour - 1].title }}
             </b-button>
           </b-list-group-item>
         </div>
@@ -56,16 +58,11 @@ export default Vue.extend({
   props: {
     timeUnit: String,
     tableFields: Array,
-    listItems: Array
+    listItems: Object
   },
   data () {
     return {
       listItemHeight: '45px',
-      taskButtonStyle: {
-        position: 'relative',
-        'z-index': 30,
-        height: 120 + 'pt'
-      },
       totalCols: {
         xl: 12,
         lg: 12,
@@ -84,6 +81,22 @@ export default Vue.extend({
         W: 7,
         D: 1,
         X: 4
+      },
+      importanceVariantMap: {
+        0: 'primary',
+        1: 'success',
+        2: 'warning',
+        3: 'danger'
+      }
+    }
+  },
+  methods: {
+    taskButtonStyle (day: number, hour: number): Record<string, any> {
+      return {
+        position: 'relative',
+        'z-index': 30,
+        height: this.listItems[day][hour].length * 45 + 'pt',
+        top: this.listItems[day][hour].offset * 45 + 'pt'
       }
     }
   }
@@ -92,6 +105,11 @@ export default Vue.extend({
 
 <style scoped>
 .list-group-item {
-  height: 45pt;
+  height: 46pt;
+  padding: 0px;
+  padding-left: 10pt;
+  padding-top: 0pt;
+  border-left: 0px;
+  border-right: 0px;
 }
 </style>
