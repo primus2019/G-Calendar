@@ -105,11 +105,4 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-.task-button {
-  height: 1000px;
-}
-b-table {
-  table-layout: fixed;
-  word-break: break-all;
-}
 </style>
