@@ -98,7 +98,8 @@ export default Vue.extend({
         position: 'relative',
         'z-index': 30,
         height: this.listItems[day][hour].length * 45 + 'pt',
-        top: this.listItems[day][hour].offset * 45 + 'pt'
+        top: this.listItems[day][hour].offset * 45 + 'pt',
+        opacity: 0.7
       }
     }
   }
