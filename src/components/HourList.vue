@@ -67,7 +67,6 @@ export default Vue.extend({
   name: 'HourList',
   props: {
     timeUnit: String,
-    tableFields: Array,
     listItems: Object,
     darkMode: Boolean
   },

@@ -7,15 +7,16 @@
         @change-time-unit="handleChangeTimeUnit"
         @focus-today="handleFocusToday"
         @shift-dark-mode="handleShiftDarkMode"
+        @backward="handleBackward"
+        @forward="handleForward"
       ></Navbar>
     </b-row>
     <b-row style="margin: 0px;">
       <HourList
         :timeUnit="timeUnit"
-        :tableFields="tableFields"
         :listItems="listItems"
         :darkMode="darkMode"
-        @add-task="handleAddTask"
+        @add-task="handleAddTaskModal"
         @show-task="handleShowTask"
       ></HourList>
     </b-row>
@@ -23,14 +24,17 @@
       id="task-detail"
       :task="taskOnShow"
       :darkMode="darkMode"
+      :addMode="addMode"
       @alter-task="handleAlterTask"
       @delete-task="handleDeleteTask"
+      @add-task="handleAddTask"
     ></TaskDetail>
   </b-container>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import axios from 'axios'
 import Navbar from '../components/Navbar.vue'
 import HourList from '../components/HourList.vue'
 import TaskDetail from '../components/TaskDetail.vue'
@@ -45,163 +49,193 @@ export default Vue.extend({
   data () {
     return {
       timeUnit: 'X',
-      tableFields: [
-        'hour',
-        { key: 'day0', label: '2020年9月15日' },
-        { key: 'day1', label: '2020年9月16日' },
-        { key: 'day2', label: '2020年9月17日' },
-        { key: 'day3', label: '2020年9月18日' },
-        { key: 'day4', label: '2020年9月19日' },
-        { key: 'day5', label: '2020年9月20日' },
-        { key: 'day6', label: '2020年9月21日' }
-      ],
-      tableItems: [
-        { hour: 0, day0: { start: 20, end: 30, title: 'aaa', description: 'bbb', importance: 0 }, day1: {}, day2: {}, day3: {}, day4: {}, day5: {}, day6: { title: 'aaa', importance: 3 } },
-        { hour: 1, day0: { start: 20, end: 30, title: 'aaa', description: 'bbb', importance: 0 }, day1: { start: 20, end: 30, title: 'aaa', description: 'bbb', importance: 0 } },
-        { hour: 2, day0: {}, day1: {} },
-        { hour: 3, day0: {}, day1: {} },
-        { hour: 4, day0: {}, day1: {} },
-        { hour: 5, day0: {}, day1: {} },
-        { hour: 6, day0: {}, day1: {} },
-        { hour: 7, day0: {}, day1: {} },
-        { hour: 8, day0: {}, day1: {} },
-        { hour: 9, day0: {}, day1: {} },
-        { hour: 10, day0: {}, day1: {} },
-        { hour: 11, day0: {}, day1: {} },
-        { hour: 12, day0: {}, day1: {} },
-        { hour: 13, day0: {}, day1: {} },
-        { hour: 14, day0: {}, day1: {} },
-        { hour: 15, day0: {}, day1: {} },
-        { hour: 16, day0: {}, day1: {} },
-        { hour: 17, day0: {}, day1: {} },
-        { hour: 18, day0: {}, day1: {} },
-        { hour: 19, day0: {}, day1: {} },
-        { hour: 20, day0: {}, day1: {} },
-        { hour: 21, day0: {}, day1: {} },
-        { hour: 22, day0: {}, day1: {} },
-        { hour: 23, day0: {}, day1: {} }
-      ],
-      listItems: {
-        0: {
-          date: '2020年9月18日',
-          8: {
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            task_id: 0,
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            start_hour: 8,
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            start_minute: 10,
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            end_hour: 10,
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            end_minute: 10,
-            length: 1,
-            offset: 1.5,
-            title: 'some title',
-            description: 'some description',
-            location: 'some location',
-            importance: 0,
-            daily: false
-          }
-        },
-        1: {
-          date: '2020年9月19日',
-          8: {
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            task_id: 0,
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            start_hour: 8,
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            start_minute: 10,
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            end_hour: 10,
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            end_minute: 10,
-            length: 1.5,
-            offset: 0.5,
-            title: 'some title',
-            description: 'some description',
-            location: 'some location',
-            importance: 1,
-            daily: false
-          }
-        },
-        2: {
-          date: '2020年9月20日',
-          8: {
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            task_id: 0,
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            start_hour: 8,
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            start_minute: 10,
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            end_hour: 10,
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            end_minute: 10,
-            length: 3,
-            offset: 0.5,
-            title: 'some title',
-            description: 'some description',
-            location: 'some location',
-            importance: 2,
-            daily: false
-          }
-        },
-        3: {
-          date: '2020年9月21日',
-          8: {
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            task_id: 0,
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            start_hour: 8,
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            start_minute: 10,
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            end_hour: 10,
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            end_minute: 10,
-            length: 4.5,
-            offset: 0.5,
-            title: 'some title',
-            description: 'some description',
-            location: 'some location',
-            importance: 3,
-            daily: false
-          }
-        }
-      },
+      listItems: {},
       taskOnShow: {},
-      darkMode: false
+      darkMode: false,
+      startingDate: '',
+      addMode: false
     }
   },
   methods: {
     handleChangeTimeUnit (newTimeUnit: string): void {
-      this.timeUnit = newTimeUnit
       console.log('handleChangeTimeUnit: ->' + String(newTimeUnit))
+      this.timeUnit = newTimeUnit
+      this.reviewTasks()
     },
     handleFocusToday (): void {
       console.log('handleFocusToday')
+      this.setStartingDate()
+      this.reviewTasks()
     },
     handleShiftDarkMode (): void {
       console.log('handleShiftDarkMode')
       this.darkMode = !this.darkMode
     },
-    async handleAddTask (): Promise<void> {
-      await console.log('handleAddTask')
+    handleBackward (): void {
+      console.log('handleBackward')
+      const tmpDate = new Date(
+        parseInt(this.startingDate.substr(0, 4)),
+        parseInt(this.startingDate.substr(4, 2)) - 1,
+        parseInt(this.startingDate.substr(6, 2))
+      )
+      tmpDate.setDate(tmpDate.getDate() - 1)
+      this.startingDate = tmpDate.getFullYear().toString() + (tmpDate.getMonth() + 1).toString().padStart(2, '0') + tmpDate.getDate().toString().padStart(2, '0')
+      this.reviewTasks()
+    },
+    handleForward (): void {
+      console.log('handleForward')
+      const tmpDate = new Date(
+        parseInt(this.startingDate.substr(0, 4)),
+        parseInt(this.startingDate.substr(4, 2)) - 1,
+        parseInt(this.startingDate.substr(6, 2))
+      )
+      tmpDate.setDate(tmpDate.getDate() + 1)
+      this.startingDate = tmpDate.getFullYear().toString() + (tmpDate.getMonth() + 1).toString().padStart(2, '0') + tmpDate.getDate().toString().padStart(2, '0')
+      this.reviewTasks()
+    },
+    handleAddTaskModal (day: number, hour: number): void {
+      this.addMode = true
+      const tmpDate = new Date(
+        parseInt(this.startingDate.substr(0, 4)),
+        parseInt(this.startingDate.substr(4, 2)) - 1,
+        parseInt(this.startingDate.substr(6, 2))
+      )
+      tmpDate.setDate(tmpDate.getDate() + day)
+      const tmpDateStr = tmpDate.getFullYear().toString() + (tmpDate.getMonth() + 1).toString().padStart(2, '0') + tmpDate.getDate().toString().padStart(2, '0')
+      this.taskOnShow = {
+        date: tmpDateStr,
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        start_hour: hour,
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        start_minute: 0,
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        end_hour: hour + 1,
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        end_minute: 0,
+        title: 'New title',
+        description: null,
+        location: null,
+        importance: 0,
+        daily: 0
+      }
+      this.$bvModal.show('task-detail')
+    },
+    handleAddTask (task: Record<string, any>): void {
+      if (task.importance == null) {
+        task.importance = 0
+      }
+      console.log('POST add_task: request', {
+        method: 'post',
+        url: 'http://localhost:3000/calendar/add_task',
+        data: {
+          // eslint-disable-next-line @typescript-eslint/camelcase
+          task: task
+        }
+      })
+      axios({
+        method: 'post',
+        url: 'http://localhost:3000/calendar/add_task',
+        data: {
+          // eslint-disable-next-line @typescript-eslint/camelcase
+          task: task
+        }
+      })
+        .then((res: Record<string, any>) => {
+          console.log('POST add_task: response.data', res.data)
+          this.$bvModal.hide('task-detail')
+          this.reviewTasks()
+        })
+        .catch((err) => { console.log(err) })
     },
     async handleShowTask (day: number, hour: number): Promise<void> {
       console.log('handleShowTask')
+      this.addMode = false
       this.taskOnShow = (this.listItems as Record<string, any>)[day][hour]
       await this.$bvModal.show('task-detail')
     },
-    async handleAlterTask (newTask: Record<string, any>): Promise<void> {
-      await console.log('handleAlterTask')
+    handleAlterTask (newTask: Record<string, any>): void {
+      if (newTask.importance == null) {
+        newTask.importance = 0
+      }
+      console.log('POST alter_task: request', {
+        method: 'post',
+        url: 'http://localhost:3000/calendar/alter_task',
+        data: { task: newTask }
+      })
+      axios({
+        method: 'post',
+        url: 'http://localhost:3000/calendar/alter_task',
+        data: { task: newTask }
+      })
+        .then((res) => {
+          if (res.data.status === 0) {
+            console.log('alter set')
+          } else {
+            console.log('alter fails')
+          }
+          this.$bvModal.hide('task-detail')
+          this.reviewTasks()
+        })
+        .catch((err) => { console.log(err) })
     },
     // eslint-disable-next-line @typescript-eslint/camelcase
-    async handleDeleteTask (task_id: number): Promise<void> {
-      await console.log('handleDeleteTask', task_id)
+    handleDeleteTask (taskId: number): void {
+      axios({
+        method: 'post',
+        url: 'http://localhost:3000/calendar/delete_task',
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        data: { task_id: taskId }
+      })
+        .then((res) => {
+          console.log('delete_task: response.data', res.data)
+          if (res.data.status === 0) {
+            console.log('remove is set')
+          } else {
+            console.log('remove fails')
+          }
+          this.$bvModal.hide('task-detail')
+          this.reviewTasks()
+        })
+        .catch((err) => { console.log(err) })
+    },
+    setStartingDate (): void {
+      const today = new Date()
+      if (this.timeUnit === 'W') {
+        today.setDate(today.getDate() - today.getDay())
+      }
+      this.startingDate = today.getFullYear().toString() + (today.getMonth() + 1).toString().padStart(2, '0') + today.getDate().toString().padStart(2, '0')
+    },
+    reviewTasks (): void {
+      console.log('review_task: request', {
+        method: 'get',
+        url: 'http://localhost:3000/calendar/review_tasks',
+        params: {
+          // eslint-disable-next-line @typescript-eslint/camelcase
+          time_unit: this.timeUnit,
+          // eslint-disable-next-line @typescript-eslint/camelcase
+          starting_date: this.startingDate
+        }
+      })
+      axios({
+        method: 'get',
+        url: 'http://localhost:3000/calendar/review_tasks',
+        params: {
+          // eslint-disable-next-line @typescript-eslint/camelcase
+          time_unit: this.timeUnit,
+          // eslint-disable-next-line @typescript-eslint/camelcase
+          starting_date: this.startingDate
+        }
+      })
+        .then((res: Record<string, any>) => {
+          console.log(res.data)
+          this.listItems = res.data
+        })
+        .catch((err) => { console.log(err) })
     }
+  },
+  mounted (): void {
+    this.setStartingDate()
+    this.reviewTasks()
   }
 })
 </script>
