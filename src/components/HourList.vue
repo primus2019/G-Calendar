@@ -40,7 +40,7 @@
                 :button="listItems[day - 1][hour - 1] == null"
                 class="list-group-item"
                 :variant="darkMode ? 'dark' : 'light'"
-                @click="$emit('add-task')"
+                @click="$emit('add-task', day - 1, hour - 1)"
               >
                 <b-button
                   block
@@ -97,8 +97,8 @@ export default Vue.extend({
       return {
         position: 'relative',
         'z-index': 30,
-        height: this.listItems[day][hour].length * 45 + 'pt',
-        top: this.listItems[day][hour].offset * 45 + 'pt',
+        height: this.listItems[day][hour].length * 46 + 'pt',
+        top: this.listItems[day][hour].offset * 46 + 'pt',
         opacity: 0.7
       }
     }
