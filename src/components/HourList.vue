@@ -23,39 +23,39 @@
         cols-sm="totalCols[timeUnit]"
         cols="totalCols[timeUnit]"
       >
-    <b-col
-      v-for="day in timeUnitNum[timeUnit]"
-      :key="day"
-      style="margin: 0px; padding: 0px;"
-    >
-      <b-list-group flush>
-        <b-list-group-item
-          class="list-group-item"
-          :variant="darkMode ? 'dark' : 'light'"
+        <b-col
+          v-for="day in timeUnitNum[timeUnit]"
+          :key="day"
+          style="margin: 0px; padding: 0px;"
         >
-          {{ listItems[day - 1].date }}
-        </b-list-group-item>
-        <div v-for="hour in 24" :key="hour">
-          <b-list-group-item
-            :button="listItems[day - 1][hour - 1] == null"
-            class="list-group-item"
-            :variant="darkMode ? 'dark' : 'light'"
-            @click="$emit('add-task')"
-          >
-            <b-button
-              block
-              class="task-button"
-              v-if="listItems[day - 1][hour - 1]"
-              :style="taskButtonStyle(day - 1, hour - 1)"
-              :variant="importanceVariantMap[listItems[day - 1][hour - 1].importance]"
-              @click.stop="$emit('show-task', day - 1, hour - 1)"
+          <b-list-group flush>
+            <b-list-group-item
+              class="list-group-item"
+              :variant="darkMode ? 'dark' : 'light'"
             >
-              {{ listItems[day - 1][hour - 1].title }}
-            </b-button>
-          </b-list-group-item>
-        </div>
-      </b-list-group>
-    </b-col>
+              {{ listItems[day - 1].date }}
+            </b-list-group-item>
+            <div v-for="hour in 24" :key="hour">
+              <b-list-group-item
+                :button="listItems[day - 1][hour - 1] == null"
+                class="list-group-item"
+                :variant="darkMode ? 'dark' : 'light'"
+                @click="$emit('add-task')"
+              >
+                <b-button
+                  block
+                  class="task-button"
+                  v-if="listItems[day - 1][hour - 1]"
+                  :style="taskButtonStyle(day - 1, hour - 1)"
+                  :variant="importanceVariantMap[listItems[day - 1][hour - 1].importance]"
+                  @click.stop="$emit('show-task', day - 1, hour - 1)"
+                >
+                  {{ listItems[day - 1][hour - 1].title }}
+                </b-button>
+              </b-list-group-item>
+            </div>
+          </b-list-group>
+        </b-col>
       </b-row>
     </b-col>
   </b-row>
