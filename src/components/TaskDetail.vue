@@ -52,15 +52,24 @@
           cancel
         </b-button>
         <b-button
+          v-if="!addMode"
           @click="$emit('delete-task', tmpTask.task_id)"
         >
           delete
         </b-button>
         <b-button
+          v-if="!addMode"
           :variant="importanceVariantMap[tmpTask.importance]"
           @click="$emit('alter-task', tmpTask)"
         >
           change
+        </b-button>
+        <b-button
+          v-if="addMode"
+          :variant="importanceVariantMap[tmpTask.importance]"
+          @click="$emit('add-task', tmpTask)"
+        >
+          add
         </b-button>
       </b-button-group>
     </template>
@@ -68,7 +77,7 @@
       no-resize
       rows="8"
       :plaintext="!editDescription"
-      :value="tmpTask.description"
+      v-model="tmpTask.description"
       :style="{ color: darkMode ? 'white' : 'black', 'background-color': 'transparent' }"
       @dblclick="editDescription = true"
       @keydown.ctrl.enter="editDescription = false"
@@ -78,7 +87,7 @@
     <b-textarea
       no-resize
       :plaintext="!editLocation"
-      :value="tmpTask.location"
+      v-model="tmpTask.location"
       :style="{ color: darkMode ? 'white' : 'black', 'background-color': 'transparent' }"
       @dblclick="editLocation = true"
       @keydown.ctrl.enter="editLocation = false"
@@ -104,7 +113,8 @@ export default Vue.extend({
   props: {
     task: Object,
     id: String,
-    darkMode: Boolean
+    darkMode: Boolean,
+    addMode: Boolean
   },
   data () {
     return {
