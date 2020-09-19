@@ -37,7 +37,7 @@
         </b-list-group-item>
         <div v-for="hour in 24" :key="hour">
           <b-list-group-item
-            button
+            :button="listItems[day - 1][hour - 1] == null"
             class="list-group-item"
             :variant="darkMode ? 'dark' : 'light'"
             @click="$emit('add-task')"
