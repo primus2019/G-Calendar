@@ -1,17 +1,20 @@
 <template>
-  <b-container :fluid="true">
-    <b-row>
+  <b-container style="padding: 0px;" :fluid="true">
+    <b-row style="margin: 0px;">
       <Navbar
         :timeUnit="timeUnit"
+        :darkMode="darkMode"
         @change-time-unit="handleChangeTimeUnit"
         @focus-today="handleFocusToday"
+        @shift-dark-mode="handleShiftDarkMode"
       ></Navbar>
     </b-row>
-    <b-row>
+    <b-row style="margin: 0px;">
       <HourList
         :timeUnit="timeUnit"
         :tableFields="tableFields"
         :listItems="listItems"
+        :darkMode="darkMode"
         @add-task="handleAddTask"
         @show-task="handleShowTask"
       ></HourList>
@@ -19,6 +22,7 @@
     <TaskDetail
       id="task-detail"
       :task="taskOnShow"
+      :darkMode="darkMode"
       @alter-task="handleAlterTask"
       @delete-task="handleDeleteTask"
     ></TaskDetail>
@@ -167,7 +171,8 @@ export default Vue.extend({
           }
         }
       },
-      taskOnShow: {}
+      taskOnShow: {},
+      darkMode: false
     }
   },
   methods: {
@@ -177,6 +182,10 @@ export default Vue.extend({
     },
     handleFocusToday (): void {
       console.log('handleFocusToday')
+    },
+    handleShiftDarkMode (): void {
+      console.log('handleShiftDarkMode')
+      this.darkMode = !this.darkMode
     },
     async handleAddTask (): Promise<void> {
       await console.log('handleAddTask')

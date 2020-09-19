@@ -1,37 +1,45 @@
 <template>
-  <b-row style="width: 100%;"
-    :cols-xl="totalCols['xl']"
-    :cols-lg="totalCols['lg']"
-    :cols-md="totalCols['md']"
-    :cols-sm="totalCols['sm']"
-    :cols="totalCols['cols']"
-  >
-    <b-col :xl="hourIndexCols['xl']" :lg="hourIndexCols['lg']" :md="hourIndexCols['md']" :sm="hourIndexCols['sm']" :cols="hourIndexCols['cols']" style="margin: 0px; padding: 0px;">
+  <b-row style="width: 100%; margin: 0px;">
+    <b-col xl="1" lg="1" md="1" sm="1" cols="1" style="margin: 0px; padding: 0px;">
       <b-list-group flush>
-        <b-list-group-item class="list-group-item"></b-list-group-item>
+        <b-list-group-item
+          class="list-group-item"
+          :variant="darkMode ? 'dark' : 'light'"
+        ></b-list-group-item>
         <div v-for="n in 24" :key="n">
-          <b-list-group-item class="list-group-item">{{ n - 1 }}</b-list-group-item>
+          <b-list-group-item
+            class="list-group-item"
+            :variant="darkMode ? 'dark' : 'light'"
+          >{{ n - 1 }}</b-list-group-item>
         </div>
       </b-list-group>
     </b-col>
+    <b-col xl="11" lg="11" md="11" sm="11" cols="11" style="padding: 0px;">
+      <b-row
+        style="width: 100%; margin: 0px;"
+        cols-xl="totalCols[timeUnit]"
+        cols-lg="totalCols[timeUnit]"
+        cols-md="totalCols[timeUnit]"
+        cols-sm="totalCols[timeUnit]"
+        cols="totalCols[timeUnit]"
+      >
     <b-col
-      :xl="Math.floor((totalCols['xl'] - hourIndexCols['xl']) / timeUnitNum[timeUnit])"
-      :lg="Math.floor((totalCols['lg'] - hourIndexCols['lg']) / timeUnitNum[timeUnit])"
-      :md="Math.floor((totalCols['md'] - hourIndexCols['md']) / timeUnitNum[timeUnit])"
-      :sm="Math.floor((totalCols['sm'] - hourIndexCols['sm']) / timeUnitNum[timeUnit])"
-      :cols="Math.floor((totalCols['cols'] - hourIndexCols['cols']) / timeUnitNum[timeUnit])"
       v-for="day in timeUnitNum[timeUnit]"
       :key="day"
       style="margin: 0px; padding: 0px;"
     >
       <b-list-group flush>
-        <b-list-group-item class="list-group-item">
+        <b-list-group-item
+          class="list-group-item"
+          :variant="darkMode ? 'dark' : 'light'"
+        >
           {{ listItems[day - 1].date }}
         </b-list-group-item>
         <div v-for="hour in 24" :key="hour">
           <b-list-group-item
             button
             class="list-group-item"
+            :variant="darkMode ? 'dark' : 'light'"
             @click="$emit('add-task')"
           >
             <b-button
@@ -48,6 +56,8 @@
         </div>
       </b-list-group>
     </b-col>
+      </b-row>
+    </b-col>
   </b-row>
 </template>
 
@@ -58,24 +68,16 @@ export default Vue.extend({
   props: {
     timeUnit: String,
     tableFields: Array,
-    listItems: Object
+    listItems: Object,
+    darkMode: Boolean
   },
   data () {
     return {
       listItemHeight: '45px',
       totalCols: {
-        xl: 12,
-        lg: 12,
-        md: 12,
-        sm: 12,
-        cols: 12
-      },
-      hourIndexCols: {
-        xl: 1,
-        lg: 1,
-        md: 1,
-        sm: 2,
-        cols: 2
+        W: 7,
+        D: 1,
+        X: 4
       },
       timeUnitNum: {
         W: 7,

@@ -3,16 +3,24 @@
     centered
     hide-backdrop
     :id="id"
+    :header-bg-variant="darkMode ? 'dark' : 'light'"
+    :body-bg-variant="darkMode ? 'dark' : 'light'"
+    :footer-bg-variant="darkMode ? 'dark' : 'light'"
     @show="reset"
   >
     <template v-slot:modal-header style="align-items: center;">
-      <h3 v-if="!editTitle" @dblclick="editTitle = true">{{ tmpTask.title }}</h3>
+      <h3
+        v-if="!editTitle"
+        :style="{ color: darkMode ? 'white' : 'black' }"
+        @dblclick="editTitle = true"
+      >{{ tmpTask.title }}</h3>
       <b-input-group-append
         v-if="editTitle"
       >
         <b-form-input
           autofocus
           v-model="titleOnInput"
+          :style="{ color: darkMode ? 'white' : 'black', 'background-color': 'transparent' }"
           @keydown.enter="handleTitleInput"
           @blur="handleTitleInput"
         ></b-form-input>
@@ -61,6 +69,7 @@
       rows="8"
       :plaintext="!editDescription"
       :value="tmpTask.description"
+      :style="{ color: darkMode ? 'white' : 'black', 'background-color': 'transparent' }"
       @dblclick="editDescription = true"
       @keydown.ctrl.enter="editDescription = false"
       @blur="editDescription = false"
@@ -70,6 +79,7 @@
       no-resize
       :plaintext="!editLocation"
       :value="tmpTask.location"
+      :style="{ color: darkMode ? 'white' : 'black', 'background-color': 'transparent' }"
       @dblclick="editLocation = true"
       @keydown.ctrl.enter="editLocation = false"
       @blur="editLocation = false"
@@ -81,6 +91,7 @@
       icon-empty="star"
       stars="3"
       v-model="tmpTask.importance"
+      :style="{ 'background-color': darkMode ? '#4d4d4d' : '#e9ecef' }"
       :color="importanceColorMap[tmpTask.importance]"
     ></b-form-rating>
   </b-modal>
@@ -92,7 +103,8 @@ export default Vue.extend({
   name: 'TaskDetail',
   props: {
     task: Object,
-    id: String
+    id: String,
+    darkMode: Boolean
   },
   data () {
     return {
