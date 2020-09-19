@@ -25,6 +25,7 @@
             size="sm"
             class="mr-2 change-date-button"
             :variant="darkMode ? 'dark' : 'light'"
+            @click="$emit('backward')"
           >
             <b-icon icon="chevron-left"></b-icon>
           </b-button>
@@ -33,6 +34,7 @@
             size="sm"
             class="mr-2 change-date-button"
             :variant="darkMode ? 'dark' : 'light'"
+            @click="$emit('forward')"
           >
             <b-icon icon="chevron-right"></b-icon>
           </b-button>
