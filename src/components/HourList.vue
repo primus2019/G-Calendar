@@ -8,9 +8,11 @@
         ></b-list-group-item>
         <div v-for="n in 24" :key="n">
           <b-list-group-item
-            class="list-group-item"
+            class="list-group-item d-flex justify-content-center align-items-center"
             :variant="darkMode ? 'dark' : 'light'"
-          >{{ n - 1 }}</b-list-group-item>
+          >
+            {{ n - 1 }}
+          </b-list-group-item>
         </div>
       </b-list-group>
     </b-col>
@@ -30,7 +32,7 @@
         >
           <b-list-group flush>
             <b-list-group-item
-              class="list-group-item"
+              class="list-group-item d-flex justify-content-center align-items-center"
               :variant="darkMode ? 'dark' : 'light'"
             >
               {{ listItems[day - 1].date }}
