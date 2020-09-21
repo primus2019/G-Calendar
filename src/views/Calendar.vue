@@ -249,7 +249,7 @@ export default Vue.extend({
       if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
         this.domain = 'localhost'
       } else {
-        this.domain = 'primus2020.cn'
+        this.domain = '172.81.225.58'
       }
     },
     setCurrentDateTime (): void {
