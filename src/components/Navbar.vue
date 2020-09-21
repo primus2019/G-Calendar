@@ -46,11 +46,22 @@
             id="dark-mode-shift-button"
             class="mr-2"
             :variant="darkMode ? 'dark' : 'light'"
+            @click="$emit('shift-healthy-mode')"
+          >
+            <b-icon
+              aria-hidden
+              :icon="healthyMode ? 'emoji-sunglasses' : 'emoji-smile-upside-down'"
+            ></b-icon>
+          </b-button>
+          <b-button
+            id="dark-mode-shift-button"
+            class="mr-2"
+            :variant="darkMode ? 'dark' : 'light'"
             @click="$emit('shift-dark-mode')"
           >
             <b-icon
               aria-hidden
-              :icon="darkMode ? 'sun' : 'moon'"
+              :icon="darkMode ? 'moon' : 'sun'"
             ></b-icon>
           </b-button>
         </b-nav-form>
@@ -79,12 +90,9 @@ import Vue from 'vue'
 export default Vue.extend({
   name: 'Navbar',
   props: {
-    timeUnit: {
-      type: String
-    },
-    darkMode: {
-      type: Boolean
-    }
+    timeUnit: String,
+    darkMode: Boolean,
+    healthyMode: Boolean
   },
   data () {
     return {

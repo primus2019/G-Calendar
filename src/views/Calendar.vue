@@ -4,9 +4,11 @@
       <Navbar
         :timeUnit="timeUnit"
         :darkMode="darkMode"
+        :healthyMode="healthyMode"
         @change-time-unit="handleChangeTimeUnit"
         @focus-today="handleFocusToday"
         @shift-dark-mode="handleShiftDarkMode"
+        @shift-healthy-mode="handleShiftHealthyMode"
         @backward="handleBackward"
         @forward="handleForward"
       ></Navbar>
@@ -18,6 +20,7 @@
         :darkMode="darkMode"
         :currentDate="currentDate"
         :currentTime="currentTime"
+        :healthyMode="healthyMode"
         @add-task="handleAddTaskModal"
         @show-task="handleShowTask"
       ></HourList>
@@ -58,7 +61,8 @@ export default Vue.extend({
       addMode: false,
       domain: '',
       currentDate: '',
-      currentTime: 0
+      currentTime: 0,
+      healthyMode: true
     }
   },
   methods: {
@@ -75,6 +79,10 @@ export default Vue.extend({
     handleShiftDarkMode (): void {
       console.log('handleShiftDarkMode')
       this.darkMode = !this.darkMode
+    },
+    handleShiftHealthyMode (): void {
+      console.log('handleShiftHealthyMode')
+      this.healthyMode = !this.healthyMode
     },
     handleBackward (): void {
       console.log('handleBackward')

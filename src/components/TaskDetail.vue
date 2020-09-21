@@ -59,6 +59,7 @@
     <template v-slot:modal-footer style="align-items: center; justify-coentents: end;">
       <b-button-group>
         <b-button
+          @click="$bvModal.hide(id)"
         >
           cancel
         </b-button>

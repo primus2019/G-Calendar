@@ -8,6 +8,7 @@
         ></b-list-group-item>
         <div v-for="n in 24" :key="n">
           <b-list-group-item
+            v-if="!healthyMode || n >= 7"
             class="list-group-item d-flex justify-content-center align-items-center"
             :variant="darkMode ? 'dark' : 'light'"
           >
@@ -46,6 +47,7 @@
             </b-list-group-item>
             <div v-for="hour in 24" :key="hour">
               <b-list-group-item
+                v-if="!healthyMode || hour >= 7"
                 :button="listItems[day - 1][hour - 1] == null"
                 class="list-group-item"
                 :variant="darkMode ? 'dark' : 'light'"
@@ -79,7 +81,8 @@ export default Vue.extend({
     listItems: Object,
     darkMode: Boolean,
     currentDate: String,
-    currentTime: Number
+    currentTime: Number,
+    healthyMode: Boolean
   },
   data () {
     return {
@@ -116,7 +119,7 @@ export default Vue.extend({
       return {
         position: 'absolute',
         'z-index': 40,
-        top: (this.currentTime + 0.5) * 46 + 'pt'
+        top: (this.currentTime + 0.5 - (this.healthyMode ? 6 : 0)) * 46 + 'pt'
       }
     }
   }
