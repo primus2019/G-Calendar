@@ -53,7 +53,8 @@ export default Vue.extend({
       taskOnShow: {},
       darkMode: false,
       startingDate: '',
-      addMode: false
+      addMode: false,
+      domain: ''
     }
   },
   methods: {
@@ -126,7 +127,7 @@ export default Vue.extend({
       }
       console.log('POST add_task: request', {
         method: 'post',
-        url: 'www.primus2020.cn:3000/calendar/add_task',
+        url: 'http://' + this.domain + ':3000/calendar/add_task',
         data: {
           // eslint-disable-next-line @typescript-eslint/camelcase
           task: task
@@ -134,7 +135,7 @@ export default Vue.extend({
       })
       axios({
         method: 'post',
-        url: 'www.primus2020.cn:3000/calendar/add_task',
+        url: 'http://' + this.domain + ':3000/calendar/add_task',
         data: {
           // eslint-disable-next-line @typescript-eslint/camelcase
           task: task
@@ -159,12 +160,12 @@ export default Vue.extend({
       }
       console.log('POST alter_task: request', {
         method: 'post',
-        url: 'www.primus2020.cn:3000/calendar/alter_task',
+        url: 'http://' + this.domain + ':3000/calendar/alter_task',
         data: { task: newTask }
       })
       axios({
         method: 'post',
-        url: 'www.primus2020.cn:3000/calendar/alter_task',
+        url: 'http://' + this.domain + ':3000/calendar/alter_task',
         data: { task: newTask }
       })
         .then((res) => {
@@ -182,7 +183,7 @@ export default Vue.extend({
     handleDeleteTask (taskId: number): void {
       axios({
         method: 'post',
-        url: 'www.primus2020.cn:3000/calendar/delete_task',
+        url: 'http://' + this.domain + ':3000/calendar/delete_task',
         // eslint-disable-next-line @typescript-eslint/camelcase
         data: { task_id: taskId }
       })
@@ -208,7 +209,7 @@ export default Vue.extend({
     reviewTasks (): void {
       console.log('review_task: request', {
         method: 'get',
-        url: 'www.primus2020.cn:3000/calendar/review_tasks',
+        url: 'http://' + this.domain + ':3000/calendar/review_tasks',
         params: {
           // eslint-disable-next-line @typescript-eslint/camelcase
           time_unit: this.timeUnit,
@@ -218,7 +219,7 @@ export default Vue.extend({
       })
       axios({
         method: 'get',
-        url: 'www.primus2020.cn:3000/calendar/review_tasks',
+        url: 'http://' + this.domain + ':3000/calendar/review_tasks',
         params: {
           // eslint-disable-next-line @typescript-eslint/camelcase
           time_unit: this.timeUnit,
@@ -231,9 +232,17 @@ export default Vue.extend({
           this.listItems = res.data
         })
         .catch((err) => { console.log(err) })
+    },
+    setDomain (): void {
+      if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+        this.domain = 'localhost'
+      } else {
+        this.domain = 'primus2020.cn'
+      }
     }
   },
   mounted (): void {
+    this.setDomain()
     this.setStartingDate()
     this.reviewTasks()
   }

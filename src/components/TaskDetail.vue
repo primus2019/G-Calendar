@@ -38,9 +38,20 @@
       <b-input-group-append
         v-if="editStartTime || editEndTime"
       >
+        <b-form-input
+          type="text"
+          v-model="timeOnPick"
+          placeholder="HH:mm:ss"
+          @blur="handleTimePick"
+          @keydown.enter="handleTimePick"
+        ></b-form-input>
         <b-form-timepicker
           no-close-button
+          button-only
+          right
+          hourCircle="h23"
           v-model="timeOnPick"
+          :hour12="false"
           @hidden="handleTimePick"
         ></b-form-timepicker>
       </b-input-group-append>
