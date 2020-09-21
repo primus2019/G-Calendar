@@ -16,6 +16,8 @@
         :timeUnit="timeUnit"
         :listItems="listItems"
         :darkMode="darkMode"
+        :currentDate="currentDate"
+        :currentTime="currentTime"
         @add-task="handleAddTaskModal"
         @show-task="handleShowTask"
       ></HourList>
@@ -54,7 +56,9 @@ export default Vue.extend({
       darkMode: false,
       startingDate: '',
       addMode: false,
-      domain: ''
+      domain: '',
+      currentDate: '',
+      currentTime: 0
     }
   },
   methods: {
@@ -239,12 +243,22 @@ export default Vue.extend({
       } else {
         this.domain = 'primus2020.cn'
       }
+    },
+    setCurrentDateTime (): void {
+      const tmpDate = new Date()
+      this.currentDate = tmpDate.getFullYear().toString() + (tmpDate.getMonth() + 1).toString().padStart(2, '0') + tmpDate.getDate().toString().padStart(2, '0')
+      this.currentTime = tmpDate.getHours() + tmpDate.getMinutes() / 60
     }
   },
   mounted (): void {
     this.setDomain()
     this.setStartingDate()
     this.reviewTasks()
+  },
+  created (): void {
+    setInterval((): void => {
+      this.setCurrentDateTime()
+    }, 3000)
   }
 })
 </script>

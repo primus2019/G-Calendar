@@ -36,6 +36,13 @@
               :variant="darkMode ? 'dark' : 'light'"
             >
               {{ listItems[day - 1].date }}
+              <b-img
+                v-if="listItems[day - 1].date === currentDate"
+                rounded="circle"
+                width="50%"
+                :src="require('../assets/flcl-badge.png')"
+                :style="avatarStyle()"
+              ></b-img>
             </b-list-group-item>
             <div v-for="hour in 24" :key="hour">
               <b-list-group-item
@@ -70,7 +77,9 @@ export default Vue.extend({
   props: {
     timeUnit: String,
     listItems: Object,
-    darkMode: Boolean
+    darkMode: Boolean,
+    currentDate: String,
+    currentTime: Number
   },
   data () {
     return {
@@ -101,6 +110,13 @@ export default Vue.extend({
         height: this.listItems[day][hour].length * 46 + 'pt',
         top: this.listItems[day][hour].offset * 46 + 'pt',
         opacity: 0.7
+      }
+    },
+    avatarStyle (): Record<string, any> {
+      return {
+        position: 'absolute',
+        'z-index': 40,
+        top: (this.currentTime + 0.5) * 46 + 'pt'
       }
     }
   }
